@@ -1,0 +1,1 @@
+ C:\\Users\\ashwi\\CascadeProjects\\notely\\.dart_tool\\flutter_build\\86585d04422df1a81a16e88cbf3eac55\\dart_build_result.json: 
