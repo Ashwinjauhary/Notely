@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:async';
 
 void main() {
   runApp(const ProviderScope(child: NotelyApp()));
@@ -292,6 +293,7 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
   String _selectedFilter = 'All';
   bool _isGridView = true;
   final TextEditingController _searchController = TextEditingController();
+  Timer? _searchTimer;
 
   @override
   void initState() {
@@ -447,6 +449,7 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _searchTimer?.cancel();
     _logoController.dispose();
     _textController.dispose();
     _searchController.dispose();
@@ -1036,9 +1039,14 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
   }
 
   void _onSearchChanged(String query) {
-    setState(() {
-      _searchQuery = query.toLowerCase();
-      _filterNotes();
+    _searchTimer?.cancel();
+    _searchTimer = Timer(const Duration(milliseconds: 300), () {
+      if (mounted) {
+        setState(() {
+          _searchQuery = query.toLowerCase();
+          _filterNotes();
+        });
+      }
     });
   }
 
@@ -1541,12 +1549,14 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
               // Title field
               TextField(
                 controller: _titleController,
+                autofocus: true,
                 decoration: const InputDecoration(
                   labelText: 'Title',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.title_rounded),
                 ),
                 textCapitalization: TextCapitalization.sentences,
+                onSubmitted: (_) => FocusScope.of(context).nextFocus(),
               ),
               const SizedBox(height: 16),
               
@@ -1560,6 +1570,7 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                 ),
                 maxLines: 4,
                 textCapitalization: TextCapitalization.sentences,
+                onSubmitted: (_) => FocusScope.of(context).unfocus(),
               ),
               const SizedBox(height: 16),
               
@@ -1577,6 +1588,7 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                         const SizedBox(height: 8),
                         DropdownButtonFormField<String>(
                           value: _selectedCategory,
+                          isExpanded: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.folder_rounded),
@@ -1584,7 +1596,13 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                           items: _categories.map((category) {
                             return DropdownMenuItem(
                               value: category,
-                              child: Text(category),
+                              child: Flexible(
+                                child: Text(
+                                  category,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -1608,6 +1626,7 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                         const SizedBox(height: 8),
                         DropdownButtonFormField<int>(
                           value: _selectedPriority,
+                          isExpanded: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.flag_rounded),
@@ -1617,6 +1636,7 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                             return DropdownMenuItem(
                               value: priority,
                               child: Row(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -1625,7 +1645,9 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                                     ),
                                   ),
                                   const SizedBox(width: 8),
-                                  Text('Priority $priority'),
+                                  Flexible(
+                                    child: Text('Priority $priority', overflow: TextOverflow.ellipsis),
+                                  ),
                                 ],
                               ),
                             );
@@ -1666,7 +1688,10 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                               vertical: 8,
                             ),
                           ),
-                          onSubmitted: (_) => _addTag(),
+                          onSubmitted: (_) {
+                            _addTag();
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
                         ),
                       ),
                       const SizedBox(width: 8),

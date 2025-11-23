@@ -34,7 +34,7 @@ class NoteCard extends ConsumerWidget {
     return Container(
       decoration: AppStyles.noteCardDecoration(
         context,
-        color: _getNoteColor(note.color),
+        color: _getNoteColor(note.color, context),
       ),
       child: Material(
         color: Colors.transparent,
@@ -219,11 +219,11 @@ class NoteCard extends ConsumerWidget {
         );
   }
 
-  Color _getNoteColor(String colorHex) {
+  Color _getNoteColor(String colorHex, BuildContext context) {
     try {
       return Color(int.parse(colorHex.replaceFirst('#', '0xFF')));
     } catch (e) {
-      return Theme.of(Get.context!).cardColor;
+      return Theme.of(context).cardColor;
     }
   }
 
