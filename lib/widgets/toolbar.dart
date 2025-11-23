@@ -76,17 +76,17 @@ class RichTextToolbar extends StatelessWidget {
                 // Alignment
                 _ToolbarButton(
                   icon: Icons.format_align_left_rounded,
-                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key] == 'left',
+                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key]?.value == 'left',
                   onPressed: () => _setAlignment('left'),
                 ),
                 _ToolbarButton(
                   icon: Icons.format_align_center_rounded,
-                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key] == 'center',
+                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key]?.value == 'center',
                   onPressed: () => _setAlignment('center'),
                 ),
                 _ToolbarButton(
                   icon: Icons.format_align_right_rounded,
-                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key] == 'right',
+                  isActive: controller.getSelectionStyle().attributes[Attribute.align.key]?.value == 'right',
                   onPressed: () => _setAlignment('right'),
                 ),
                 

@@ -42,53 +42,61 @@ class _BlockEditorState extends State<BlockEditor> {
             child: QuillEditor.basic(
               controller: widget.controller,
               configurations: QuillEditorConfigurations(
-                controller: widget.controller,
                 readOnly: false,
                 customStyles: DefaultStyles(
-                  h1: DefaultStyles.h1.copyWith(
-                    style: theme.textTheme.headlineLarge?.copyWith(
+                  h1: DefaultTextBlockStyle(
+                    theme.textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: colorScheme.onSurface,
-                    ),
+                    ) ?? const TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
-                  h2: DefaultStyles.h2.copyWith(
-                    style: theme.textTheme.headlineMedium?.copyWith(
+                  h2: DefaultTextBlockStyle(
+                    theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onSurface,
-                    ),
+                    ) ?? const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
-                  h3: DefaultStyles.h3.copyWith(
-                    style: theme.textTheme.headlineSmall?.copyWith(
+                  h3: DefaultTextBlockStyle(
+                    theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onSurface,
-                    ),
+                    ) ?? const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
-                  paragraph: DefaultStyles.paragraph.copyWith(
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      height: 1.6,
+                  paragraph: DefaultTextBlockStyle(
+                    theme.textTheme.bodyLarge?.copyWith(
                       color: colorScheme.onSurface,
-                    ),
+                    ) ?? const TextStyle(fontSize: 16),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
-                  quote: DefaultStyles.quote.copyWith(
-                    style: theme.textTheme.bodyLarge?.copyWith(
+                  quote: DefaultTextBlockStyle(
+                    theme.textTheme.bodyMedium?.copyWith(
                       fontStyle: FontStyle.italic,
-                      color: colorScheme.onSurface.withOpacity(0.8),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(
-                          color: colorScheme.primary,
-                          width: 4,
-                        ),
-                      ),
-                    ),
+                      color: colorScheme.onSurface.withValues(alpha: 0.8),
+                    ) ?? const TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
-                  code: DefaultStyles.code.copyWith(
-                    style: theme.textTheme.bodyMedium?.copyWith(
+                  code: DefaultTextBlockStyle(
+                    theme.textTheme.bodySmall?.copyWith(
                       fontFamily: 'monospace',
-                      backgroundColor: colorScheme.surfaceVariant,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
+                      backgroundColor: colorScheme.surfaceContainerHighest,
+                      color: colorScheme.onSurface,
+                    ) ?? const TextStyle(fontSize: 14, fontFamily: 'monospace'),
+                    const VerticalSpacing(0, 0),
+                    const VerticalSpacing(0, 0),
+                    null,
                   ),
                 ),
               ),

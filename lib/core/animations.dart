@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppAnimations {
+  // Duration constants
+  static const Duration fastDuration = Duration(milliseconds: 150);
+  static const Duration mediumDuration = Duration(milliseconds: 300);
+  static const Duration slowDuration = Duration(milliseconds: 500);
+  
   // Page Transitions
   static Widget slideTransition(Widget child, Animation<double> animation) {
     const begin = Offset(1.0, 0.0);
@@ -359,6 +364,7 @@ class StaggeredListAnimation extends StatefulWidget {
   final Duration staggerDelay;
   final Curve curve;
 
+  static const Duration fastDuration = Duration(milliseconds: 150);
   static const Duration mediumDuration = Duration(milliseconds: 300);
   static const Duration slowDuration = Duration(milliseconds: 500);
 

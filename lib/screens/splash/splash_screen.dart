@@ -154,7 +154,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     children: [
                       Text(
-                        'Notely',
+                        'Aj Verse',
                         style: theme.textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                           color: colorScheme.primary,
@@ -330,7 +330,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
                 // App name with letter-by-letter animation
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: 'Notely'.split('').map((letter) {
+                  children: 'Aj Verse'.split('').map((letter) {
                     return Text(
                       letter,
                       style: theme.textTheme.headlineLarge?.copyWith(
@@ -340,11 +340,11 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
                     ).animate().slideY(
                       begin: 0.5,
                       duration: 400.ms,
-                      delay: Duration(milliseconds: 'Notely'.indexOf(letter) * 100),
+                      delay: Duration(milliseconds: 'Aj Verse'.indexOf(letter) * 100),
                       curve: Curves.easeOutCubic,
                     ).fadeIn(
                       duration: 300.ms,
-                      delay: Duration(milliseconds: 'Notely'.indexOf(letter) * 100),
+                      delay: Duration(milliseconds: 'Aj Verse'.indexOf(letter) * 100),
                     );
                   }).toList(),
                 ),

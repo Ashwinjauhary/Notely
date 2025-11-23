@@ -237,9 +237,7 @@ class _FloatingActionButtonAnimatedState extends State<FloatingActionButtonAnima
               foregroundColor: widget.foregroundColor ?? colorScheme.onPrimary,
               elevation: widget.elevation ?? 6,
               isExtended: widget.isExtended,
-              label: widget.isExtended && widget.label != null
-                  ? Text(widget.label!)
-                  : null,
+              label: widget.isExtended ? widget.child : const SizedBox.shrink(),
               icon: widget.isLoading
                   ? SizedBox(
                       width: 20,
@@ -316,13 +314,13 @@ class _IconButtonAnimatedState extends State<IconButtonAnimated>
     super.dispose();
   }
 
-  void _handleTapDown() {
+  void _handleTapDown(TapDownDetails details) {
     if (!widget.isLoading) {
       _controller.forward();
     }
   }
 
-  void _handleTapUp() {
+  void _handleTapUp(TapUpDetails details) {
     _controller.reverse();
     widget.onPressed?.call();
   }
@@ -551,11 +549,11 @@ class _CardAnimatedState extends State<CardAnimated>
     super.dispose();
   }
 
-  void _handleTapDown() {
+  void _handleTapDown(TapDownDetails details) {
     _controller.forward();
   }
 
-  void _handleTapUp() {
+  void _handleTapUp(TapUpDetails details) {
     _controller.reverse();
     widget.onTap?.call();
   }
@@ -582,10 +580,10 @@ class _CardAnimatedState extends State<CardAnimated>
               borderRadius: widget.borderRadius ?? AppStyles.lgRadius,
             ),
             child: InkWell(
-              onTap: _handleTapDown,
+              onTap: widget.onTap,
+              onTapDown: _handleTapDown,
               onTapUp: _handleTapUp,
               onTapCancel: _handleTapCancel,
-              onLongPress: widget.onLongPress,
               borderRadius: widget.borderRadius ?? AppStyles.lgRadius,
               child: Padding(
                 padding: widget.padding ?? AppStyles.mdPadding,

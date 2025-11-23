@@ -3,23 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 
 void main() {
-  runApp(const ProviderScope(child: NotelyApp()));
+  runApp(const ProviderScope(child: AjVerseApp()));
 }
 
-class NotelyApp extends StatefulWidget {
-  const NotelyApp({super.key});
+class AjVerseApp extends StatefulWidget {
+  const AjVerseApp({super.key});
 
   @override
-  State<NotelyApp> createState() => _NotelyAppState();
+  State<AjVerseApp> createState() => _AjVerseAppState();
 }
 
-class _NotelyAppState extends State<NotelyApp> {
+class _AjVerseAppState extends State<AjVerseApp> {
   ThemeMode _themeMode = ThemeMode.system;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Notely - Complete Notes App',
+      title: 'Aj Verse - Complete Notes App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -154,7 +154,7 @@ class _NotelyAppState extends State<NotelyApp> {
         ),
       ),
       themeMode: _themeMode,
-      home: NotelyHome(
+      home: AjVerseHome(
         onThemeChanged: (ThemeMode themeMode) {
           setState(() {
             _themeMode = themeMode;
@@ -268,21 +268,21 @@ class Note {
   }
 }
 
-class NotelyHome extends StatefulWidget {
+class AjVerseHome extends StatefulWidget {
   final Function(ThemeMode) onThemeChanged;
   final ThemeMode currentThemeMode;
 
-  const NotelyHome({
+  const AjVerseHome({
     super.key, 
     required this.onThemeChanged,
     required this.currentThemeMode,
   });
 
   @override
-  State<NotelyHome> createState() => _NotelyHomeState();
+  State<AjVerseHome> createState() => _AjVerseHomeState();
 }
 
-class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
+class _AjVerseHomeState extends State<AjVerseHome> with TickerProviderStateMixin {
   late AnimationController _logoController;
   late AnimationController _textController;
   late Animation<double> _logoAnimation;
@@ -307,7 +307,7 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
       _notes = [
         Note(
           id: '1',
-          title: '🚀 Welcome to Notely Premium',
+          title: '🚀 Welcome to Aj Verse Premium',
           content: 'This is an advanced notes app with incredible features! 🎨\n\n✨ **Premium Features:**\n• Word count & reading time tracking\n• Reminder system with notifications\n• Password protection for sensitive notes\n• File attachments support\n• Advanced metadata tracking\n• Beautiful animations and transitions\n\n🔥 **Try these features:**\n1. Click the theme toggle button (🌓☀️🌙)\n2. Create notes with reminders\n3. Set up password protection\n4. Check word counts and reading times\n5. Explore all the premium filters',
           createdAt: DateTime.now().subtract(const Duration(hours: 2)),
           color: '#E3F2FD',
@@ -517,7 +517,7 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Notely',
+                            'Aj Verse',
                             style: theme.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.primary,
@@ -1168,7 +1168,7 @@ class _NotelyHomeState extends State<NotelyHome> with TickerProviderStateMixin {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '📊 Notely Analytics',
+                      '📊 Aj Verse Analytics',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ],
@@ -1507,6 +1507,105 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
     super.dispose();
   }
 
+  void _showCategorySelector(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Select Category',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: _categories.map((category) {
+                    return ListTile(
+                      title: Text(category),
+                      trailing: _selectedCategory == category 
+                          ? const Icon(Icons.check, color: Colors.blue)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _selectedCategory = category;
+                        });
+                        Navigator.pop(context);
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPrioritySelector(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Select Priority',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: List.generate(5, (index) {
+                    final priority = index + 1;
+                    return ListTile(
+                      title: Row(
+                        children: [
+                          ...List.generate(priority, (i) => 
+                            const Icon(Icons.star, size: 16, color: Colors.amber)
+                          ),
+                          const SizedBox(width: 8),
+                          Text('Priority $priority'),
+                        ],
+                      ),
+                      trailing: _selectedPriority == priority 
+                          ? const Icon(Icons.check, color: Colors.blue)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _selectedPriority = priority;
+                        });
+                        Navigator.pop(context);
+                      },
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _addTag() {
     final tag = _tagController.text.trim();
     if (tag.isNotEmpty && !_tags.contains(tag)) {
@@ -1586,30 +1685,29 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                           style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(height: 8),
-                        DropdownButtonFormField<String>(
-                          value: _selectedCategory,
-                          isExpanded: true,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.folder_rounded),
-                          ),
-                          items: _categories.map((category) {
-                            return DropdownMenuItem(
-                              value: category,
-                              child: Flexible(
-                                child: Text(
-                                  category,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                        GestureDetector(
+                          onTap: () => _showCategorySelector(context),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: colorScheme.outline),
+                              borderRadius: BorderRadius.circular(8),
+                              color: colorScheme.surface,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.folder_rounded),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    _selectedCategory,
+                                    style: theme.textTheme.bodyLarge,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedCategory = value!;
-                            });
-                          },
+                                const Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -1624,39 +1722,40 @@ class _CreateNoteDialogState extends State<CreateNoteDialog> {
                           style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(height: 8),
-                        DropdownButtonFormField<int>(
-                          value: _selectedPriority,
-                          isExpanded: true,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.flag_rounded),
+                        GestureDetector(
+                          onTap: () => _showPrioritySelector(context),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: colorScheme.outline),
+                              borderRadius: BorderRadius.circular(8),
+                              color: colorScheme.surface,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.flag_rounded),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Wrap(
+                                          children: List.generate(_selectedPriority, (i) => 
+                                            const Icon(Icons.star, size: 16, color: Colors.amber)
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Flexible(
+                                        child: Text('Priority $_selectedPriority', overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
                           ),
-                          items: List.generate(5, (index) {
-                            final priority = index + 1;
-                            return DropdownMenuItem(
-                              value: priority,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: List.generate(priority, (i) => 
-                                      const Icon(Icons.star, size: 16, color: Colors.amber)
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Flexible(
-                                    child: Text('Priority $priority', overflow: TextOverflow.ellipsis),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPriority = value!;
-                            });
-                          },
                         ),
                       ],
                     ),
